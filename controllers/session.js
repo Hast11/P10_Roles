@@ -132,3 +132,12 @@ exports.adminOrMyselfRequired = (req, res, next) => {
         res.send(403); //403 es el error de prohibido acceso
     }
 };
+
+exports.adminRequired = (req, res, next) => { //Metodo para copmrobar que la persona es admin
+    if(!!req.session.loginUser?.isAdmin){
+        next();
+    } else{
+        //console.log('Petición denegada, se requieren permisos de administrador.');
+        res.send(403);
+    }
+};
