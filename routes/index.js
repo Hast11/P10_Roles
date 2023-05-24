@@ -34,8 +34,11 @@ router.get('/posts', postController.index);
 //:postId(\\d+) se llama escapado, dentro de lo que vaya de los dos puntos es contenido variable, metemos \\d+ para que pueda tener infinitas cifras, llamado escapado regex
 router.get('/posts/:postId(\\d+)', postController.show);
 
+//P10
+router.get('/posts/new', sessionController.loginRequired, postController.new);
+
 // Si quieres ir a posts/new me cargas el controlador
-router.get('/posts/new', postController.new);
+// router.get('/posts/new', postController.new); Obsoleto, ahora queremos que haya login
 
 //Gonde guardarlo, en el /post, le subimos la imagen, y ejecutamos el create 
 router.post('/posts', upload.single('image'), postController.create); //upload.single('image') es el middlewere que se ejecuta cada vez que se hace un metodo post a /post
