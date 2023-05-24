@@ -199,5 +199,24 @@ exports.destroy = async (req, res, next) => {
     }
 };
 
+/*
+    PRÁCTICA 10: adminOrAuthorRequired
+    Este middleware debe abortar la petición en curso si el usuario logueado no es un administrador,
+    o no es el autor del post al que se refiere el parámetro de ruta :postId.
+*/
+
+exports.adminOrAuthorRequired = (req, res, next) => {
+    const {post} = req.load;
+    const isAdmin = !!req.session.loginUser?.isAdmin;
+    const isAuthor = post.authorId === req.session.loginUser?.id;
+
+    if(isAdmin || isAuthor){
+        next();
+    } else{
+        console.log('Petición denegada, no es admin or author');
+        res.send(403);
+    }
+};
+
 
 
