@@ -93,3 +93,14 @@ exports.destroy = (req, res, next) => {
     delete req.session.loginUser; //Borro la propiedad req.session.loginUser
     res.redirect("/login"); // redirect to login gage
 };
+
+//MW para ver si el usuario esta logueado
+exports.loginRequired = (req, res, next) => {
+    if(req.session.loginUser){ //si esta logueado
+        next(); //Va a el siguiente MW
+    }else{
+        //console.log("Se requiere información de login. Redirigiendo a página de login...");
+
+        res.redirect('/login');
+    }
+};
