@@ -129,6 +129,6 @@ exports.adminOrMyselfRequired = (req, res, next) => {
         next();
     } else {
         console.log('Ruta prohibida: No es el usuario indicado o administrador.');
-        res.send(403);
+        res.send(403); //403 es el error de prohibido acceso
     }
 };
