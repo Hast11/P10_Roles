@@ -41,21 +41,22 @@ router.get('/posts/:postId(\\d+)', postController.show);
 router.get('/posts/new', sessionController.loginRequired, postController.new);
 // router.get('/posts/new', postController.new); Obsoleto, ahora queremos que haya login, no hace falta meterlo en el create de abajo 
 
+//Gonde guardarlo, en el /post, le subimos la imagen, y ejecutamos el create 
+router.post('/posts', upload.single('image'), postController.create); //upload.single('image') es el middlewere que se ejecuta cada vez que se hace un metodo post a /post
+// pertenece al paquete multer, sirve para extraer imagenes de la peticion, extrayendola por su id image
+
 /* P10 - Los posts solo pueden ser editados por su autor, o por un usuario administrador. */
 router.get('/posts/:postId(\\d+)/edit', postController.adminOrAuthorRequired, postController.edit);
 //router.get('/posts/:postId(\\d+)/edit', postController.edit);
+
+router.put('/posts/:postId(\\d+)', upload.single('image'), postController.update);
 
 /* P10 - Los posts solo pueden ser borrados por su autor, o por un usuario administrador. */
 router.delete('/posts/:postId(\\d+)', postController.adminOrAuthorRequired, postController.destroy);
 //router.delete('/posts/:postId(\\d+)', postController.destroy);
 
-//Gonde guardarlo, en el /post, le subimos la imagen, y ejecutamos el create 
-router.post('/posts', upload.single('image'), postController.create); //upload.single('image') es el middlewere que se ejecuta cada vez que se hace un metodo post a /post
-// pertenece al paquete multer, sirve para extraer imagenes de la peticion, extrayendola por su id image
 
 
-
-router.put('/posts/:postId(\\d+)', upload.single('image'), postController.update);
 
 
 //Practica 8
