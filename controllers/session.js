@@ -103,3 +103,32 @@ exports.loginRequired = (req, res, next) => {
         res.redirect('/login');
     }
 };
+
+/*
+PRÁCTICA 9:
+Middleware que aborta la petición en curso si el usuario logueado no es un administrador o no es el usuario al que se refiere el parámetro de ruta :userId
+*/
+
+exports.adminOrMyselfRequired = (req, res, next) => {
+    const isAdminBoolean = !!req.session.loginUser?.isAdmin;
+
+    /*
+    La sentencia anterior, puede reducirse a:
+        let isAdmin;
+        let isAdminBoolean;
+        if(req.session.loginUser){
+            isAdmin = req.session.loginUser?.isAdmin;
+            isAdminBoolean = !!isAdmin;
+        }
+    */
+
+    const isMyself = req.load.user.id === req.session.loginUser?.id; //guardamos en una booleana si la el usuario de la pagina que estamos cargando es el
+    // Mismo que se ha logeado, tres iguales compara tambien si son del mismo tipo
+
+    if (isAdminBoolean || isMyself) {
+        next();
+    } else {
+        console.log('Ruta prohibida: No es el usuario indicado o administrador.');
+        res.send(403);
+    }
+};
