@@ -1,5 +1,11 @@
 <section> 
     <h2>Posts:</h2>
+    <div class="postOptions">
+        <%# P10 - Tarea 3.1: El botón de crear un nuevo post solo le aparezca al usuario si está logueado.%>
+        <% if(locals.loginUser) {%>
+            <a class="button-2" href="/posts/new">Nuevo post</a>
+        <% } %>
+    </div>
     <a href="/posts/new">Nuevo Post</a>
     <% for (var j in posts) { %>
         <% var post = posts[j]; %>  
