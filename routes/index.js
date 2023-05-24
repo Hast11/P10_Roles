@@ -57,12 +57,23 @@ router.delete('/posts/:postId(\\d+)', postController.destroy);
 //Practica 8
 router.param('userId', userController.load);
 router.get('/users',                    userController.index);
-router.get('/users/:userId(\\d+)',      userController.show);
+//router.get('/users/:userId(\\d+)',      userController.show);
+/* P10 - El perfil de un usuario solo lo puede ver el propio usuario, o un usuario administrador. */
+router.get('/users/:userId(\\d+)',      sessionController.adminOrMyselfRequired, userController.show);
 router.get('/users/new',                userController.new);
 router.post('/users',                   userController.create);
-router.get('/users/:userId(\\d+)/edit', userController.edit);
-router.put('/users/:userId(\\d+)',      userController.update);
-router.delete('/users/:userId(\\d+)',   userController.destroy);
+// router.get('/users/:userId(\\d+)/edit', userController.edit);
+// router.put('/users/:userId(\\d+)',      userController.update);
+// router.delete('/users/:userId(\\d+)',   userController.destroy);
+
+/* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
+router.get('/users/:userId(\\d+)/edit', sessionController.adminOrMyselfRequired, userController.edit);
+
+/* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
+router.put('/users/:userId(\\d+)',      sessionController.adminOrMyselfRequired, userController.update);
+
+/* P10 - Borrar a un usuario de la BBDD solo le está permitido al propio usuario, o a un usuario administrador. */
+router.delete('/users/:userId(\\d+)',   sessionController.adminOrMyselfRequired, userController.destroy);
 
 // Routes for the resource /session
 router.get('/login',    sessionController.new);     // login form
