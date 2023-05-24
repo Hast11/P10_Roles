@@ -105,7 +105,7 @@ exports.loginRequired = (req, res, next) => {
 };
 
 /*
-PRÁCTICA 9:
+PRÁCTICA 10:
 Middleware que aborta la petición en curso si el usuario logueado no es un administrador o no es el usuario al que se refiere el parámetro de ruta :userId
 */
 
