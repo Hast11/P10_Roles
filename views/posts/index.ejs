@@ -15,7 +15,7 @@
             <div class="OpcionesPost">
                 <a class="button-2" href="/posts/<%= post.id %>">Show</a>
                 <%# P9 - Tarea 3.2: Los botones para editar o borrar un post solo le aparecen a los usuarios administradores o al autor del post. %>
-                <% if(locals.loginUser?.isAdmin || locals.loginUser?.id === post.authorId) {%>
+                <% if(locals.loginUser?.isAdmin || locals.loginUser?.id === post.authorId) { //Si el usuario logeado es admin o el autor me aparecen los botones%>
                     <a class="button-2" href="/posts/<%= post.id %>/edit">Edit</a>
                     <a class="button-2" href="/posts/<%= post.id %>?_method=DELETE" onClick="return confirm('Delete: <%= post.title %>');">Delete</a>
                 <% } %></div>
