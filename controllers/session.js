@@ -100,7 +100,6 @@ exports.loginRequired = (req, res, next) => {
         next(); //Va a el siguiente MW
     }else{
         //console.log("Se requiere información de login. Redirigiendo a página de login...");
-
         res.redirect('/login');
     }
 };
