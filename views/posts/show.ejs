@@ -2,6 +2,10 @@
     <a href="/posts" class="button-2">Volver a listado de posts</a>
     <h2>Show Post:</h2>
     <%- include('../attachments/_attachment', { post: post }) %>
+    <% if(locals.loginUser?.isAdmin || locals.loginUser?.id === post.authorId) {%>
+        <a class="button-2" href="/posts/<%= post.id %>/edit">Edit</a>
+        <a class="button-2" href="/posts/<%= post.id %>?_method=DELETE" onClick="return confirm('Delete: <%= post.title %>');">Delete</a>
+    <% } %>
     <article class="postShow">
         <ul>
             <li>Title: <b><%= post.title %></b></li>
