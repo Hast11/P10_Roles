@@ -18,5 +18,8 @@
         </tr>
         <%  } %>
     </table>
-    <a href="/users/new" class="button-2">Create new user</a>
+    <%# P10 - El botón de crear un nuevo usuario solo le aparezca a los usuarios administradores. %>
+    <% if(locals.loginUser?.isAdmin){ %>
+        <a href="/users/new" class="button-2">Create nuevo usuario</a>
+    <% } %>
 </section>

@@ -1,6 +1,11 @@
 <section> 
     <h2>Posts:</h2>
-    <a href="/posts/new">Nuevo Post</a>
+    <div class="postOptions">
+        <%# P10 - Tarea 3.1: El botón de crear un nuevo post solo le aparezca al usuario si está logueado.%>
+        <% if(locals.loginUser) {%>
+            <a class="button-2" href="/posts/new">Nuevo post</a>
+        <% } %>
+    </div>
     <% for (var j in posts) { %>
         <% var post = posts[j]; %>  
         <article class="postShow">
@@ -8,9 +13,11 @@
             <%- include('../attachments/_attachment', { post: post }) %>  //Importantisimo
             <div class="OpcionesPost">
                 <a class="button-2" href="/posts/<%= post.id %>">Show</a>
-                <a class="button-2" href="/posts/<%= post.id %>/edit">Edit</a>
-                <a class="button-2" href="/posts/<%= post.id %>?_method=DELETE" onClick="return confirm('Delete: <%= post.title %>');">Delete</a>
-            </div>
+                <%# P9 - Tarea 3.2: Los botones para editar o borrar un post solo le aparecen a los usuarios administradores o al autor del post. %>
+                <% if(locals.loginUser?.isAdmin || locals.loginUser?.id === post.authorId) { //Si el usuario logeado es admin o el autor me aparecen los botones%>
+                    <a class="button-2" href="/posts/<%= post.id %>/edit">Edit</a>
+                    <a class="button-2" href="/posts/<%= post.id %>?_method=DELETE" onClick="return confirm('Delete: <%= post.title %>');">Delete</a>
+                <% } %></div>
             <div>
                 Post de:<b><%= post.author?.username ?? "Vete tu a saber" %></b>
             </div>

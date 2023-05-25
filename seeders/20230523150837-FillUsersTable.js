@@ -22,7 +22,7 @@ module.exports = {
                 password: crypt.encryptPassword('5678', 'bbbb'),
                 salt: 'bbbb',
                 email: "pepe@core.example",
-                isAdmin: true,
+                // isAdmin: true,
                 createdAt: new Date(), updatedAt: new Date()
             }
         ]);

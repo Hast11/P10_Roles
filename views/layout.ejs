@@ -8,16 +8,19 @@
             <h1> Welcome to My Blog</h1>         
             <nav>
                 <div>
-                <% if (!locals.loginUser) { %>
+                <% if (!locals.loginUser) { //Atencion a esta linea%> 
                     <a href="/login">Login</a>
                 <% } %>
                 <a href="/">Inicio</a>
                 <a href="/author">Autor</a>
                 <a href="/posts">Posts</a>
-                <a href="/users">Usuarios</a>
-                <a href="/users/new">Crear usuario</a>
+                <%# P10 - El botón de la barra de navegación que muestra el listado de usuarios solo le aparece a los usuario administradores, también el de crear usuario. %>
+                <% if(locals.loginUser?.isAdmin){ %>
+                    <a href="/users">Usuarios</a>
+                    <a href="/users/new">Crear usuario</a>
+                <% } %>
                 </div> 
-                <% if (locals.loginUser) { %>
+                <% if (locals.loginUser) { //Atencion a esta linea%>
                     <a href="/users/<%= loginUser.id %>"><%= loginUser.username %></a>
                     <a href="/login?_method=DELETE" class="logoutLink">Logout</a>
                 <% }%>

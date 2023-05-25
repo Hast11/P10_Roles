@@ -93,3 +93,51 @@ exports.destroy = (req, res, next) => {
     delete req.session.loginUser; //Borro la propiedad req.session.loginUser
     res.redirect("/login"); // redirect to login gage
 };
+
+//MW para ver si el usuario esta logueado
+exports.loginRequired = (req, res, next) => {
+    if(req.session.loginUser){ //si esta logueado
+        next(); //Va a el siguiente MW
+    }else{
+        //console.log("Se requiere información de login. Redirigiendo a página de login...");
+        res.redirect('/login');
+    }
+};
+
+/*
+PRÁCTICA 10:
+Middleware que aborta la petición en curso si el usuario logueado no es un administrador o no es el usuario al que se refiere el parámetro de ruta :userId
+*/
+
+exports.adminOrMyselfRequired = (req, res, next) => {
+    const isAdminBoolean = !!req.session.loginUser?.isAdmin;
+
+    /*
+    La sentencia anterior, puede reducirse a:
+        let isAdmin;
+        let isAdminBoolean;
+        if(req.session.loginUser){
+            isAdmin = req.session.loginUser?.isAdmin;
+            isAdminBoolean = !!isAdmin;
+        }
+    */
+
+    const isMyself = req.load.user.id === req.session.loginUser?.id; //guardamos en una booleana si la el usuario de la pagina que estamos cargando es el
+    // Mismo que se ha logeado, tres iguales compara tambien si son del mismo tipo
+
+    if (isAdminBoolean || isMyself) {
+        next();
+    } else {
+        console.log('Ruta prohibida: No es el usuario indicado o administrador.');
+        res.send(403); //403 es el error de prohibido acceso
+    }
+};
+
+exports.adminRequired = (req, res, next) => { //Metodo para copmrobar que la persona es admin
+    if(!!req.session.loginUser?.isAdmin){
+        next();
+    } else{
+        //console.log('Petición denegada, se requieren permisos de administrador.');
+        res.send(403);
+    }
+};

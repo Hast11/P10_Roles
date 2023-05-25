@@ -34,30 +34,63 @@ router.get('/posts', postController.index);
 //:postId(\\d+) se llama escapado, dentro de lo que vaya de los dos puntos es contenido variable, metemos \\d+ para que pueda tener infinitas cifras, llamado escapado regex
 router.get('/posts/:postId(\\d+)', postController.show);
 
+//P10
+
 // Si quieres ir a posts/new me cargas el controlador
-router.get('/posts/new', postController.new);
+// porque nunca llegaras ahi sin logearte
+router.get('/posts/new', sessionController.loginRequired, postController.new);
+// router.get('/posts/new', postController.new); Obsoleto, ahora queremos que haya login, no hace falta meterlo en el create de abajo 
 
 //Gonde guardarlo, en el /post, le subimos la imagen, y ejecutamos el create 
 router.post('/posts', upload.single('image'), postController.create); //upload.single('image') es el middlewere que se ejecuta cada vez que se hace un metodo post a /post
 // pertenece al paquete multer, sirve para extraer imagenes de la peticion, extrayendola por su id image
 
-//Para editar los post
-router.get('/posts/:postId(\\d+)/edit', postController.edit);
+/* P10 - Los posts solo pueden ser editados por su autor, o por un usuario administrador. */
+router.get('/posts/:postId(\\d+)/edit', postController.adminOrAuthorRequired, postController.edit);
+//router.get('/posts/:postId(\\d+)/edit', postController.edit);
 
 router.put('/posts/:postId(\\d+)', upload.single('image'), postController.update);
 
-//Misma que con el show
-router.delete('/posts/:postId(\\d+)', postController.destroy);
+/* P10 - Los posts solo pueden ser borrados por su autor, o por un usuario administrador. */
+router.delete('/posts/:postId(\\d+)', postController.adminOrAuthorRequired, postController.destroy);
+//router.delete('/posts/:postId(\\d+)', postController.destroy);
+
+
+
+
 
 //Practica 8
 router.param('userId', userController.load);
-router.get('/users',                    userController.index);
-router.get('/users/:userId(\\d+)',      userController.show);
-router.get('/users/new',                userController.new);
-router.post('/users',                   userController.create);
-router.get('/users/:userId(\\d+)/edit', userController.edit);
-router.put('/users/:userId(\\d+)',      userController.update);
-router.delete('/users/:userId(\\d+)',   userController.destroy);
+
+
+
+/* P10 - La lista de usuarios registrados solo la puede ver un usuario administrador. */
+router.get('/users', sessionController.adminRequired, userController.index);
+//router.get('/users',                    userController.index);
+
+/* P10 - El perfil de un usuario solo lo puede ver el propio usuario, o un usuario administrador. */
+router.get('/users/:userId(\\d+)', sessionController.adminOrMyselfRequired, userController.show);
+//router.get('/users/:userId(\\d+)',      userController.show);
+
+/* P10 - Solo el administrador puede crear nuevos usuarios. */
+router.get('/users/new', sessionController.adminRequired, userController.new);
+//router.get('/users/new',                userController.new);
+
+/* P10 - Solo el administrador puede crear nuevos usuarios. */
+router.post('/users', sessionController.adminRequired, userController.create);
+// router.post('/users',                   userController.create);
+
+/* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
+router.get('/users/:userId(\\d+)/edit', sessionController.adminOrMyselfRequired, userController.edit);
+// router.get('/users/:userId(\\d+)/edit', userController.edit);
+
+/* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
+router.put('/users/:userId(\\d+)', sessionController.adminOrMyselfRequired, userController.update);
+// router.put('/users/:userId(\\d+)',      userController.update);
+
+/* P10 - Borrar a un usuario de la BBDD solo le está permitido al propio usuario, o a un usuario administrador. */
+router.delete('/users/:userId(\\d+)', sessionController.adminOrMyselfRequired, userController.destroy);
+// router.delete('/users/:userId(\\d+)',   userController.destroy);
 
 // Routes for the resource /session
 router.get('/login',    sessionController.new);     // login form
