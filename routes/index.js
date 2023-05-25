@@ -81,7 +81,7 @@ router.post('/users', sessionController.adminRequired, userController.create);
 // router.post('/users',                   userController.create);
 
 /* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
-router.get('/users/:userId(\\d+)/edit', sessionController.adminOrMyselfRequired, userController.edit);
+router.get('/users/:userId(\\d+)/edit', sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.edit);
 // router.get('/users/:userId(\\d+)/edit', userController.edit);
 
 /* P10 - El perfil de un usuario solo lo puede editar el propio usuario, o un usuario administrador. */
@@ -89,7 +89,7 @@ router.put('/users/:userId(\\d+)', sessionController.adminOrMyselfRequired, user
 // router.put('/users/:userId(\\d+)',      userController.update);
 
 /* P10 - Borrar a un usuario de la BBDD solo le está permitido al propio usuario, o a un usuario administrador. */
-router.delete('/users/:userId(\\d+)', sessionController.adminOrMyselfRequired, userController.destroy);
+router.delete('/users/:userId(\\d+)', sessionController.loginRequired, sessionController.adminOrMyselfRequired, userController.destroy);
 // router.delete('/users/:userId(\\d+)',   userController.destroy);
 
 // Routes for the resource /session
